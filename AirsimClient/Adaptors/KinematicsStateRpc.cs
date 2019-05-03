@@ -19,63 +19,53 @@
 
 #endregion MIT License (c) 2018 Isaac Walker
 
-using System.Numerics;
+using AirsimClient.Common;
+using MessagePack;
+using Newtonsoft.Json;
 
-namespace AirsimClient.Common
+
+namespace AirsimClient.Adaptors
 {
     /// <summary>
-    /// The data about a collision event
+    /// Adapts the KinematicsState for transfer over Rpc
     /// </summary>
-    public class CollisionInfo
+    [MessagePackObject]
+    internal class KinematicsStateRpc : IAdaptable<KinematicsState>
     {
-        /// <summary>
-        /// Whether the collision has occured
-        /// </summary>
-        public readonly bool HasCollided;
+        [JsonProperty("position")]
+        internal Vector3Rpc Position { get; set; }
 
 
-        public readonly Vector3 Normal;
+        [JsonProperty("orientation")]
+        internal QuaternionRpc Orientation { get; set; }
 
 
-        public readonly Vector3 ImpactPoint;
+        [JsonProperty("linear_velocity")]
+        internal Vector3Rpc LinearVelocity { get; set; }
 
 
-        public readonly Vector3 Position;
+        [JsonProperty("linear_acceleration")]
+        internal Vector3Rpc LinearAcceleration { get; set; }
 
 
-        public readonly float PenetrationDepth;
+        [JsonProperty("angular_velocity")]
+        internal Vector3Rpc AngularVelocity { get; set; }
 
 
-        public readonly ulong TimeStamp;
+        [JsonProperty("angular_acceleration")]
+        internal Vector3Rpc AngularAcceleration { get; set; }
 
-
-        public readonly uint CollisionCount;
-
-
-        public readonly string ObjectName;
-
-
-        public readonly int ObjectId;
-
-        internal CollisionInfo(
-            bool HasCollided,
-            Vector3 Normal,
-            Vector3 ImpactPoint,
-            Vector3 Position,
-            float PenetrationDepth,
-            ulong TimeStamp,
-            uint CollisionCount,
-            string ObjectName,
-            int ObjectId)
+        public KinematicsState AdaptTo()
         {
-            this.Normal = Normal;
-            this.ImpactPoint = ImpactPoint;
-            this.Position = Position;
-            this.PenetrationDepth = PenetrationDepth;
-            this.TimeStamp = TimeStamp;
-            this.CollisionCount = CollisionCount;
-            this.ObjectName = ObjectName;
-            this.ObjectId = ObjectId;
+            return new KinematicsState
+                (
+                Position.AdaptTo(),
+                Orientation.AdaptTo(),
+                LinearVelocity.AdaptTo(),
+                AngularVelocity.AdaptTo(),
+                LinearAcceleration.AdaptTo(),
+                AngularAcceleration.AdaptTo()
+                );
         }
     }
 }

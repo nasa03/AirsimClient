@@ -1,6 +1,6 @@
-﻿#region MIT License (c) 2018 Isaac Walker
+﻿#region MIT License (c) 2018 Dan Brandt
 
-// Copyright 2018 Isaac Walker
+// Copyright 2018 Dan Brandt
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 // associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -17,46 +17,25 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
 // OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#endregion MIT License (c) 2018 Isaac Walker
+#endregion MIT License (c) 2018 Dan Brandt
 
-using System.Numerics;
+using MessagePack;
 
-
-namespace AirsimClient.Common
+namespace MsgPackRpc
 {
-    /// <summary>
-    /// The current state of the environment
-    /// </summary>
-    public class EnvironmentState
+    [MessagePackObject]
+    public class RpcRequest
     {
+        [Key(0)]
+        public int Type { get; set; }
 
-        public readonly Vector3 Position;
+        [Key(1)]
+        public uint MsgId { get; set; }
 
+        [Key(2)]
+        public string Method { get; set; }
 
-        public readonly Vector3 Gravity;
-
-
-        public readonly float AirPressure;
-
-
-        public readonly float Temperature;
-
-
-        public readonly float AirDensity;
-        
-        internal EnvironmentState(
-            Vector3 Position, 
-            Vector3 Gravity,
-            float AirPressure,
-            float Temperature,
-            float AirDensity
-            )
-        {
-            this.Position = Position;
-            this.Gravity = Gravity;
-            this.AirPressure = AirPressure;
-            this.Temperature = Temperature;
-            this.AirDensity = AirDensity;
-        }
+        [Key(3)]
+        public object[] Params { get; set; }
     }
 }

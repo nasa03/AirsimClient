@@ -1,111 +1,133 @@
-﻿using AirsimClient.Common;
-using Microsoft.Spatial;
-using System;
+﻿#region MIT License (c) 2018 Isaac Walker
+
+// Copyright 2018 Isaac Walker
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+// associated documentation files (the "Software"), to deal in the Software without restriction,
+// including without limitation the rights to use, copy, modify, merge, publish, distribute,
+// sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or
+// substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+// NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
+// OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+#endregion MIT License (c) 2018 Isaac Walker
+
+using AirsimClient.Adaptors;
+using AirsimClient.Common;
+using MsgPackRpc;
 using System.Collections.Generic;
-using System.Linq;
+using System.Net;
 using System.Numerics;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AirsimClient
 {
     public interface IRpcClientBase
     {
-        bool Ping();
+        Task<bool> ConnectAsync(int Port, IPAddress Address);
 
-        ConnectionState GetConnectionState();
+        Task<RpcResult<bool>> PingAsync();
 
-        void EnableApiControl(string VehicleName);
+        Task<ConnectionState> GetConnectionStateAsync();
 
-        bool IsApiControlEnabled(string VehicleName);
+        Task<RpcResult> EnableApiControlAsync(bool IsEnabled, string VehicleName);
 
-        int GetClientVersion();
+        Task<RpcResult<bool>> IsApiControlEnabledAsync(string VehicleName);
 
-        int GetMinRequiredServerVersion();
+        Task<int> GetClientVersionAsync();
 
-        int GetMinRequiredClientVersion();
+        Task<int> GetMinRequiredServerVersionAsync();
 
-        int GetServerVersion();
+        Task<int> GetMinRequiredClientVersionAsync();
 
-        void Reset();
+        Task<int> GetServerVersionAsync();
 
-        bool ArmDisarm(bool Arm, string VehicleName);
+        Task<RpcResult> ResetAsync();
 
-        GeographyPoint GetHomeGeoPoint(string VehicleName);
+        Task<RpcResult<bool>> ArmDisarmAsync(bool Arm, string VehicleName);
 
-        bool SimSetSegmentationObjectID(string MeshName, int ObjectId, bool IsNameRegex);
+        Task<RpcResult<GeoPoint>> GetHomeGeoPointAsync(string VehicleName);
 
-        int SimGetSegmentationObjectId(string MeshName);
+        Task<RpcResult<bool>> SimSetSegmentationObjectIDAsync(string MeshName, int ObjectId, bool IsNameRegex);
 
-        CollisionInfo SimGetCollisionInfo(string VehicleName);
+        Task<RpcResult<int>> SimGetSegmentationObjectIdAsync(string MeshName);
 
-        Pose SimGetVehiclePose(string VehicleName);
+        Task<RpcResult<CollisionInfo>> SimGetCollisionInfoAsync(string VehicleName);
 
-        void SimSetVehiclePose(Pose Pose, bool IgnoreCollision, string VehicleName);
+        Task<RpcResult<Pose>> SimGetVehiclePoseAsync(string VehicleName);
 
-        ImageResponse SimGetImages(ImageRequest Request, string VehicleName);
+        Task<RpcResult> SimSetVehiclePoseAsync(Pose Pose, bool IgnoreCollision, string VehicleName);
 
-        ushort[] SimGetImage(string CameraName, ImageType ImageType, string VehicleName);
+        Task<RpcResult<ImageResponse>> SimGetImagesAsync(ImageRequest Request, string VehicleName);
 
-        void SimPrintLogMessage(string Message, string MessageParam, ushort severity);
+        Task<RpcResult<ushort[]>> SimGetImageAsync(string CameraName, ImageType ImageType, string VehicleName);
 
-        bool SimIsPaused();
+        Task<RpcResult> SimPrintLogMessageAsync(string Message, string MessageParam, ushort severity);
 
-        void SimPause(bool Pause);
+        Task<RpcResult<bool>> SimIsPausedAsync();
 
-        void SimContinueForTime(double Seconds);
+        Task<RpcResult> SimPauseAsync(bool Pause);
 
-        void SimEnableWeather(bool Enable);
+        Task<RpcResult> SimContinueForTimeAsync(double Seconds);
 
-        void SimSetWeatherParameter(WeatherParameter Param, float Val);
+        Task<RpcResult> SimEnableWeatherAsync(bool Enable);
 
-        void SimSetTimeOfDay(bool IsEnabled, string StartDateTime, bool IsStartDateTimeDST,
+        Task<RpcResult> SimSetWeatherParameterAsync(WeatherParameter Param, float Val);
+
+        Task<RpcResult> SimSetTimeOfDayAsync(bool IsEnabled, string StartDateTime, bool IsStartDateTimeDST,
            float CelestialClockSpeed, float UpdateIntervalSecs, bool MoveSun);
 
-        Pose SimGetObjectPose(string ObjectName);
+        Task<RpcResult<Pose>> SimGetObjectPoseAsync(string ObjectName);
 
-        bool SimSetObjectPose(string ObjectName, Pose Pose, bool Teleport);
+        Task<RpcResult<bool>> SimSetObjectPoseAsync(string ObjectName, Pose Pose, bool Teleport);
 
-        CameraInfo SimGetCameraInfo(string CameraName, string VehicleName);
+        Task<RpcResult<CameraInfo>> SimGetCameraInfoAsync(string CameraName, string VehicleName);
 
-        void SimSetCameraOrientation(string CameraName, Quaternion Orientation, string VehicleName);
+        Task<RpcResult> SimSetCameraOrientationAsync(string CameraName, Quaternion Orientation, string VehicleName);
 
-        KinematicsState SimGetGroundTruthKinematics(string VehicleName);
+        Task<RpcResult<KinematicsState>> SimGetGroundTruthKinematicsAsync(string VehicleName);
 
-        EnvironmentState SimGetGroundTruthEnvironment(string VehicleName);
+        Task<RpcResult<EnvironmentState>> SimGetGroundTruthEnvironmentAsync(string VehicleName);
 
-        void CancelLastTask(string VehicleName);
+        Task<RpcResult> CancelLastTaskAsync(string VehicleName);
 
-        void SimCharSetFaceExpression(string ExpressionName, float Value, string CharacterName);
+        Task<RpcResult> SimCharSetFaceExpressionAsync(string ExpressionName, float Value, string CharacterName);
 
-        float SimCharGetFaceExpression(string ExpressionName, string CharacterName);
+        Task<RpcResult<float>> SimCharGetFaceExpressionAsync(string ExpressionName, string CharacterName);
 
-        string[] SimCharGetAvailableFaceExpressions();
+        Task<RpcResult<string[]>> SimCharGetAvailableFaceExpressionsAsync();
 
-        void SimCharSetSkinDarkness(float Value, string CharacterName);
+        Task<RpcResult> SimCharSetSkinDarknessAsync(float Value, string CharacterName);
 
-        float SimCharGetSkinDarkness(string CharacterName);
+        Task<RpcResult<float>> SimCharGetSkinDarknessAsync(string CharacterName);
 
-        void SimCharSetSkinAgeing(float Value, string CharacteName);
+        Task<RpcResult> SimCharSetSkinAgeingAsync(float Value, string CharacteName);
 
-        float SimCharGetSkinAgeing(string CharacterName);
+        Task<RpcResult<float>> SimCharGetSkinAgeingAsync(string CharacterName);
 
-        void SimCharSetHeadRotation(Quaternion q, string CharacterName);
+        Task<RpcResult> SimCharSetHeadRotationAsync(Quaternion q, string CharacterName);
 
-        Quaternion SimCharGetHeadRotation(string CharaterName);
+        Task<RpcResult<Quaternion>> SimCharGetHeadRotationAsync(string CharaterName);
 
-        void SimCharSetBonePose(string BoneName, Pose pose, string CharacterName);
+        Task<RpcResult> SimCharSetBonePoseAsync(string BoneName, Pose pose, string CharacterName);
 
-        Pose SimCharGetBonePose(string BoneName, string CharacterName);
+        Task<RpcResult<Pose>> SimCharGetBonePoseAsync(string BoneName, string CharacterName);
 
-        void SimCharResetBonePose(string BoneName, string CharaterName);
+        Task<RpcResult> SimCharResetBonePoseAsync(string BoneName, string CharaterName);
 
-        void SimCharSetFacePreset(string PresetName, float Value, string CharacterName);
+        Task<RpcResult> SimCharSetFacePresetAsync(string PresetName, float Value, string CharacterName);
 
-        void SimSetFacePresets(IDictionary<string, float> Presets, string CharacterName);
+        Task<RpcResult> SimSetFacePresetsAsync(Dictionary<string, float> Presets, string CharacterName);
 
-        void SimSetBonePoses(IDictionary<string, Pose> Poses, string CharacterName);
+        Task<RpcResult> SimSetBonePosesAsync(Dictionary<string, Pose> Poses, string CharacterName);
 
-        IDictionary<string, Pose> SimGetBonePoses(string[] BoneNames, string CharacterName);
+        Task<RpcResult<Dictionary<string, Pose>>> SimGetBonePosesAsync(string[] BoneNames, string CharacterName);
     }
 }

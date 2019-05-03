@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirsimClient", "AirsimClient\AirsimClient.csproj", "{B11476AD-3081-4354-91BB-9A0EB6A0235B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsgPackRpc", "MsgPackRpc\MsgPackRpc.csproj", "{B6415E66-4DBE-49A7-8C5D-024B560C615D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{B11476AD-3081-4354-91BB-9A0EB6A0235B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B11476AD-3081-4354-91BB-9A0EB6A0235B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B11476AD-3081-4354-91BB-9A0EB6A0235B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6415E66-4DBE-49A7-8C5D-024B560C615D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6415E66-4DBE-49A7-8C5D-024B560C615D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6415E66-4DBE-49A7-8C5D-024B560C615D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6415E66-4DBE-49A7-8C5D-024B560C615D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

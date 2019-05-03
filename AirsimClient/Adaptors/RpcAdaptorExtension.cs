@@ -19,63 +19,38 @@
 
 #endregion MIT License (c) 2018 Isaac Walker
 
-using System.Numerics;
+using MsgPackRpc;
+using System.Threading.Tasks;
 
-namespace AirsimClient.Common
+namespace AirsimClient.Adaptors
 {
     /// <summary>
-    /// The data about a collision event
+    /// Extension methods for built-in adaption with the rpc client
     /// </summary>
-    public class CollisionInfo
+    internal static class RpcAdaptorExtension
     {
         /// <summary>
-        /// Whether the collision has occured
+        /// Performs CallAsync when the result needs to be adapted
         /// </summary>
-        public readonly bool HasCollided;
-
-
-        public readonly Vector3 Normal;
-
-
-        public readonly Vector3 ImpactPoint;
-
-
-        public readonly Vector3 Position;
-
-
-        public readonly float PenetrationDepth;
-
-
-        public readonly ulong TimeStamp;
-
-
-        public readonly uint CollisionCount;
-
-
-        public readonly string ObjectName;
-
-
-        public readonly int ObjectId;
-
-        internal CollisionInfo(
-            bool HasCollided,
-            Vector3 Normal,
-            Vector3 ImpactPoint,
-            Vector3 Position,
-            float PenetrationDepth,
-            ulong TimeStamp,
-            uint CollisionCount,
-            string ObjectName,
-            int ObjectId)
+        /// <returns></returns>
+        internal static async Task<RpcResult<R>> CallAsyncAdaptor<T,R>(this RpcProxy m_proxy, string method, params object[] args)
+            where T : IAdaptable<R>
         {
-            this.Normal = Normal;
-            this.ImpactPoint = ImpactPoint;
-            this.Position = Position;
-            this.PenetrationDepth = PenetrationDepth;
-            this.TimeStamp = TimeStamp;
-            this.CollisionCount = CollisionCount;
-            this.ObjectName = ObjectName;
-            this.ObjectId = ObjectId;
+            Task<RpcResult<T>> output =  m_proxy.CallAsync<T>(method, args);
+
+            Task<RpcResult<R>> returned = output.ContinueWith<RpcResult<R>>(ContinuationFunction<T, R>);
+
+            return await returned;
+        }
+
+        private static RpcResult<R> ContinuationFunction<T,R>(Task<RpcResult<T>> Input)
+            where T : IAdaptable<R>
+        {
+            RpcResult<T> Res = Input.Result;
+            if (Res.Successful)
+                return new RpcResult<R>() { Value = Res.Value.AdaptTo(), Error = Res.Error };
+
+            return new RpcResult<R> { Value = default(R) };
         }
     }
 }

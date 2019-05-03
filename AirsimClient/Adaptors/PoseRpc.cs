@@ -19,63 +19,39 @@
 
 #endregion MIT License (c) 2018 Isaac Walker
 
-using System.Numerics;
+using AirsimClient.Common;
+using MessagePack;
+using Newtonsoft.Json;
 
-namespace AirsimClient.Common
+namespace AirsimClient.Adaptors
 {
     /// <summary>
-    /// The data about a collision event
+    /// Adapts the Pose object for transfer over Rpc
     /// </summary>
-    public class CollisionInfo
+    [MessagePackObject]
+    internal class PoseRpc : IAdaptable<Pose>
     {
-        /// <summary>
-        /// Whether the collision has occured
-        /// </summary>
-        public readonly bool HasCollided;
+        [JsonProperty("position")]
+        internal Vector3Rpc Position { get; set; }
 
 
-        public readonly Vector3 Normal;
+        [JsonProperty("orientation")]
+        internal QuaternionRpc Orientation { get; set; }
 
-
-        public readonly Vector3 ImpactPoint;
-
-
-        public readonly Vector3 Position;
-
-
-        public readonly float PenetrationDepth;
-
-
-        public readonly ulong TimeStamp;
-
-
-        public readonly uint CollisionCount;
-
-
-        public readonly string ObjectName;
-
-
-        public readonly int ObjectId;
-
-        internal CollisionInfo(
-            bool HasCollided,
-            Vector3 Normal,
-            Vector3 ImpactPoint,
-            Vector3 Position,
-            float PenetrationDepth,
-            ulong TimeStamp,
-            uint CollisionCount,
-            string ObjectName,
-            int ObjectId)
+        public Pose AdaptTo()
         {
-            this.Normal = Normal;
-            this.ImpactPoint = ImpactPoint;
-            this.Position = Position;
-            this.PenetrationDepth = PenetrationDepth;
-            this.TimeStamp = TimeStamp;
-            this.CollisionCount = CollisionCount;
-            this.ObjectName = ObjectName;
-            this.ObjectId = ObjectId;
+            return new Pose(Position.AdaptTo(), Orientation.AdaptTo());
         }
+
+        internal static PoseRpc AdaptFrom(Pose pose)
+        {
+            return new PoseRpc()
+            {
+                Position = Vector3Rpc.AdaptFrom(pose.Position),
+                Orientation = QuaternionRpc.AdaptFrom(pose.Orientation)
+            };
+        }
+
+    
     }
 }

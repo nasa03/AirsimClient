@@ -19,63 +19,41 @@
 
 #endregion MIT License (c) 2018 Isaac Walker
 
+using Newtonsoft.Json;
 using System.Numerics;
 
-namespace AirsimClient.Common
+namespace AirsimClient.Adaptors
 {
     /// <summary>
-    /// The data about a collision event
+    /// Adaptor for Numerics' Vector3 transer over Rpc
     /// </summary>
-    public class CollisionInfo
+    internal class Vector3Rpc : IAdaptable<Vector3>
     {
-        /// <summary>
-        /// Whether the collision has occured
-        /// </summary>
-        public readonly bool HasCollided;
+        [JsonProperty("x_val")]
+        internal float X { get; set; }
 
 
-        public readonly Vector3 Normal;
+        [JsonProperty("y_val")]
+        internal float Y { get; set; }
 
 
-        public readonly Vector3 ImpactPoint;
+        [JsonProperty("z_val")]
+        internal float Z { get; set; }
 
 
-        public readonly Vector3 Position;
-
-
-        public readonly float PenetrationDepth;
-
-
-        public readonly ulong TimeStamp;
-
-
-        public readonly uint CollisionCount;
-
-
-        public readonly string ObjectName;
-
-
-        public readonly int ObjectId;
-
-        internal CollisionInfo(
-            bool HasCollided,
-            Vector3 Normal,
-            Vector3 ImpactPoint,
-            Vector3 Position,
-            float PenetrationDepth,
-            ulong TimeStamp,
-            uint CollisionCount,
-            string ObjectName,
-            int ObjectId)
+        public Vector3 AdaptTo()
         {
-            this.Normal = Normal;
-            this.ImpactPoint = ImpactPoint;
-            this.Position = Position;
-            this.PenetrationDepth = PenetrationDepth;
-            this.TimeStamp = TimeStamp;
-            this.CollisionCount = CollisionCount;
-            this.ObjectName = ObjectName;
-            this.ObjectId = ObjectId;
+            return new Vector3(X, Y, Z);
+        }
+
+        internal static Vector3Rpc AdaptFrom(Vector3 vector3)
+        {
+            return new Vector3Rpc()
+            {
+                X = vector3.X,
+                Y = vector3.Y,
+                Z = vector3.Z
+            };
         }
     }
 }

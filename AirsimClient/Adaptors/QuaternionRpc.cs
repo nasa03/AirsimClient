@@ -19,63 +19,47 @@
 
 #endregion MIT License (c) 2018 Isaac Walker
 
+using MessagePack;
+using Newtonsoft.Json;
 using System.Numerics;
 
-namespace AirsimClient.Common
+namespace AirsimClient.Adaptors
 {
     /// <summary>
-    /// The data about a collision event
+    /// Adapts the Quaternion object for transfer over Rpc
     /// </summary>
-    public class CollisionInfo
+    [MessagePackObject]
+    internal class QuaternionRpc : IAdaptable<Quaternion>
     {
-        /// <summary>
-        /// Whether the collision has occured
-        /// </summary>
-        public readonly bool HasCollided;
+        [JsonProperty("w_val")]
+        internal float W { get; set; }
 
 
-        public readonly Vector3 Normal;
+        [JsonProperty("x_val")]
+        internal float X { get; set; }
 
 
-        public readonly Vector3 ImpactPoint;
+        [JsonProperty("y_val")]
+        internal float Y { get; set; }
 
 
-        public readonly Vector3 Position;
+        [JsonProperty("z_val")]
+        internal float Z { get; set; }
 
-
-        public readonly float PenetrationDepth;
-
-
-        public readonly ulong TimeStamp;
-
-
-        public readonly uint CollisionCount;
-
-
-        public readonly string ObjectName;
-
-
-        public readonly int ObjectId;
-
-        internal CollisionInfo(
-            bool HasCollided,
-            Vector3 Normal,
-            Vector3 ImpactPoint,
-            Vector3 Position,
-            float PenetrationDepth,
-            ulong TimeStamp,
-            uint CollisionCount,
-            string ObjectName,
-            int ObjectId)
+        public Quaternion AdaptTo()
         {
-            this.Normal = Normal;
-            this.ImpactPoint = ImpactPoint;
-            this.Position = Position;
-            this.PenetrationDepth = PenetrationDepth;
-            this.TimeStamp = TimeStamp;
-            this.CollisionCount = CollisionCount;
-            this.ObjectName = ObjectName;
-            this.ObjectId = ObjectId;
+            return new Quaternion(X, Y, Z, W);
+        }
+
+        internal static QuaternionRpc AdaptFrom(Quaternion q)
+        {
+            return new QuaternionRpc()
+            {
+                W = q.W,
+                X = q.X,
+                Y = q.Y,
+                Z = q.Z
+            };
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿#region MIT License (c) 2018 Isaac Walker
+﻿#region MIT License (c) 2018 Dan Brandt
 
-// Copyright 2018 Isaac Walker
+// Copyright 2018 Dan Brandt
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 // associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -17,46 +17,40 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
 // OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#endregion MIT License (c) 2018 Isaac Walker
+#endregion MIT License (c) 2018 Dan Brandt
 
-using System.Numerics;
-
-
-namespace AirsimClient.Common
+namespace MsgPackRpc
 {
     /// <summary>
-    /// The current state of the environment
+    ///     Result of RPC, signalling failure through properties instead of throwing exceptions.
     /// </summary>
-    public class EnvironmentState
+    public class RpcResult
     {
+        /// <summary>Error associated with RPC.</summary>
+        public string Error { get; set; } = string.Empty;
 
-        public readonly Vector3 Position;
-
-
-        public readonly Vector3 Gravity;
-
-
-        public readonly float AirPressure;
-
-
-        public readonly float Temperature;
-
-
-        public readonly float AirDensity;
-        
-        internal EnvironmentState(
-            Vector3 Position, 
-            Vector3 Gravity,
-            float AirPressure,
-            float Temperature,
-            float AirDensity
-            )
+        /// <summary>Whether RPC failed.</summary>
+        public bool Failed
         {
-            this.Position = Position;
-            this.Gravity = Gravity;
-            this.AirPressure = AirPressure;
-            this.Temperature = Temperature;
-            this.AirDensity = AirDensity;
+            get => !_successful;
+            internal set => _successful = !value;
         }
+
+        /// <summary>Whether RPC was successful.</summary>
+        public bool Successful
+        {
+            get => _successful;
+            internal set => _successful = value;
+        }
+
+        private bool _successful;
+    }
+
+    /// <inheritdoc cref="RpcResult" />
+    /// <typeparam name="T">Return value of RPC.</typeparam>
+    public class RpcResult<T> : RpcResult
+    {
+        /// <summary>Return value of RPC.</summary>
+        public T Value { get; set; } = default(T);
     }
 }

@@ -19,44 +19,14 @@
 
 #endregion MIT License (c) 2018 Isaac Walker
 
-using System.Numerics;
-
-
-namespace AirsimClient.Common
+namespace AirsimClient.Adaptors
 {
     /// <summary>
-    /// The current state of the environment
+    /// Interface for adaption for Rpc transfer
     /// </summary>
-    public class EnvironmentState
+    /// <typeparam name="T"></typeparam>
+    internal interface IAdaptable<T>
     {
-
-        public readonly Vector3 Position;
-
-
-        public readonly Vector3 Gravity;
-
-
-        public readonly float AirPressure;
-
-
-        public readonly float Temperature;
-
-
-        public readonly float AirDensity;
-        
-        internal EnvironmentState(
-            Vector3 Position, 
-            Vector3 Gravity,
-            float AirPressure,
-            float Temperature,
-            float AirDensity
-            )
-        {
-            this.Position = Position;
-            this.Gravity = Gravity;
-            this.AirPressure = AirPressure;
-            this.Temperature = Temperature;
-            this.AirDensity = AirDensity;
-        }
+        T AdaptTo();
     }
 }

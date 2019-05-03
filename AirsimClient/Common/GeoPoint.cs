@@ -19,63 +19,35 @@
 
 #endregion MIT License (c) 2018 Isaac Walker
 
-using System.Numerics;
-
-namespace AirsimClient.Common
+namespace AirsimClient.Adaptors
 {
     /// <summary>
-    /// The data about a collision event
+    /// A geography point
     /// </summary>
-    public class CollisionInfo
+    public class GeoPoint
     {
         /// <summary>
-        /// Whether the collision has occured
+        /// Altitude
         /// </summary>
-        public readonly bool HasCollided;
+        public readonly double Altitude;
 
 
-        public readonly Vector3 Normal;
+        /// <summary>
+        /// Latitude
+        /// </summary>
+        public readonly double Latitude;
 
 
-        public readonly Vector3 ImpactPoint;
+        /// <summary>
+        /// Longitude
+        /// </summary>
+        public readonly double Longitude;
 
-
-        public readonly Vector3 Position;
-
-
-        public readonly float PenetrationDepth;
-
-
-        public readonly ulong TimeStamp;
-
-
-        public readonly uint CollisionCount;
-
-
-        public readonly string ObjectName;
-
-
-        public readonly int ObjectId;
-
-        internal CollisionInfo(
-            bool HasCollided,
-            Vector3 Normal,
-            Vector3 ImpactPoint,
-            Vector3 Position,
-            float PenetrationDepth,
-            ulong TimeStamp,
-            uint CollisionCount,
-            string ObjectName,
-            int ObjectId)
+        internal GeoPoint(double Altitude, double Latitude, double Longitude)
         {
-            this.Normal = Normal;
-            this.ImpactPoint = ImpactPoint;
-            this.Position = Position;
-            this.PenetrationDepth = PenetrationDepth;
-            this.TimeStamp = TimeStamp;
-            this.CollisionCount = CollisionCount;
-            this.ObjectName = ObjectName;
-            this.ObjectId = ObjectId;
-        }
+            this.Altitude = Altitude;
+            this.Latitude = Latitude;
+            this.Longitude = Longitude;
+        }     
     }
 }

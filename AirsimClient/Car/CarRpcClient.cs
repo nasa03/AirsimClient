@@ -19,44 +19,30 @@
 
 #endregion MIT License (c) 2018 Isaac Walker
 
-using System.Numerics;
 
+using System.Threading.Tasks;
+using AirsimClient.Adaptors;
+using MsgPackRpc;
 
-namespace AirsimClient.Common
+namespace AirsimClient.Car
 {
     /// <summary>
-    /// The current state of the environment
+    /// Implementation of the Client API for the Car
     /// </summary>
-    public class EnvironmentState
+    public sealed class CarRpcClient : RpcClientBase, ICarRpcClient
     {
-
-        public readonly Vector3 Position;
-
-
-        public readonly Vector3 Gravity;
-
-
-        public readonly float AirPressure;
-
-
-        public readonly float Temperature;
-
-
-        public readonly float AirDensity;
-        
-        internal EnvironmentState(
-            Vector3 Position, 
-            Vector3 Gravity,
-            float AirPressure,
-            float Temperature,
-            float AirDensity
-            )
+        /// <inheritdoc/>
+        public async Task<RpcResult<CarState>> GetCarStateAsync(string VehicleName)
         {
-            this.Position = Position;
-            this.Gravity = Gravity;
-            this.AirPressure = AirPressure;
-            this.Temperature = Temperature;
-            this.AirDensity = AirDensity;
+            return await m_proxy.CallAsyncAdaptor<CarStateRpc, CarState>(Methods.GetCarState, VehicleName);
+        }
+
+        /// <inheritdoc/>
+        public async Task<RpcResult> SetCarControlsAsync(CarControls Controls, string VehicleName)
+        {
+            CarControlsRpc adapted = CarControlsRpc.AdaptFrom(Controls);
+
+            return await m_proxy.CallAsync(Methods.SetCarControls, adapted, VehicleName);
         }
     }
 }

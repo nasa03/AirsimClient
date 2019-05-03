@@ -19,63 +19,56 @@
 
 #endregion MIT License (c) 2018 Isaac Walker
 
-using System.Numerics;
+using AirsimClient.Car;
+using MessagePack;
+using Newtonsoft.Json;
 
-namespace AirsimClient.Common
+namespace AirsimClient.Adaptors
 {
     /// <summary>
-    /// The data about a collision event
+    /// Adapts the CarState for transfer over Rpc
     /// </summary>
-    public class CollisionInfo
+    [MessagePackObject]
+    internal class CarStateRpc : IAdaptable<CarState>
     {
-        /// <summary>
-        /// Whether the collision has occured
-        /// </summary>
-        public readonly bool HasCollided;
+        [JsonProperty("speed")]
+        internal float Speed { get; set; }
 
 
-        public readonly Vector3 Normal;
+        [JsonProperty("gear")]
+        internal int Gear { get; set; }
 
 
-        public readonly Vector3 ImpactPoint;
+        [JsonProperty("rpm")]
+        internal float RPM { get; set; }
 
 
-        public readonly Vector3 Position;
+        [JsonProperty("maxrpm")]
+        internal float MaxRPM { get; set; }
 
 
-        public readonly float PenetrationDepth;
+        [JsonProperty("handbrake")]
+        internal bool Handbrake { get; set; }
 
 
-        public readonly ulong TimeStamp;
+        [JsonProperty("kinematics_estimated")]
+        internal KinematicsStateRpc KinematicsEstimated { get; set; }
 
 
-        public readonly uint CollisionCount;
+        [JsonProperty("time_stamp")]
+        internal ulong TimeStamp { get; set; }
 
-
-        public readonly string ObjectName;
-
-
-        public readonly int ObjectId;
-
-        internal CollisionInfo(
-            bool HasCollided,
-            Vector3 Normal,
-            Vector3 ImpactPoint,
-            Vector3 Position,
-            float PenetrationDepth,
-            ulong TimeStamp,
-            uint CollisionCount,
-            string ObjectName,
-            int ObjectId)
+        public CarState AdaptTo()
         {
-            this.Normal = Normal;
-            this.ImpactPoint = ImpactPoint;
-            this.Position = Position;
-            this.PenetrationDepth = PenetrationDepth;
-            this.TimeStamp = TimeStamp;
-            this.CollisionCount = CollisionCount;
-            this.ObjectName = ObjectName;
-            this.ObjectId = ObjectId;
+            return new CarState(
+                Speed,
+                Gear,
+                RPM,
+                MaxRPM,
+                Handbrake,
+                KinematicsEstimated.AdaptTo(),
+                TimeStamp
+                );
         }
     }
 }

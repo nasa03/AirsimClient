@@ -19,63 +19,43 @@
 
 #endregion MIT License (c) 2018 Isaac Walker
 
-using System.Numerics;
 
-namespace AirsimClient.Common
+using AirsimClient.Common;
+using MessagePack;
+using Newtonsoft.Json;
+
+namespace AirsimClient.Adaptors
 {
     /// <summary>
-    /// The data about a collision event
+    /// Adapts the CameraInfo for transer over Rpc
     /// </summary>
-    public class CollisionInfo
+    [MessagePackObject]
+    internal class CameraInfoRpc : IAdaptable<CameraInfo>
     {
-        /// <summary>
-        /// Whether the collision has occured
-        /// </summary>
-        public readonly bool HasCollided;
+        [JsonProperty("pose")]
+        internal PoseRpc Pose { get; set; }
 
 
-        public readonly Vector3 Normal;
+        [JsonProperty("fov")]
+        internal float FOV { get; set; }
 
 
-        public readonly Vector3 ImpactPoint;
+        [JsonProperty("proj_mat")]
+        internal ProjectionMatrixRpc ProjMat { get; set; }
 
-
-        public readonly Vector3 Position;
-
-
-        public readonly float PenetrationDepth;
-
-
-        public readonly ulong TimeStamp;
-
-
-        public readonly uint CollisionCount;
-
-
-        public readonly string ObjectName;
-
-
-        public readonly int ObjectId;
-
-        internal CollisionInfo(
-            bool HasCollided,
-            Vector3 Normal,
-            Vector3 ImpactPoint,
-            Vector3 Position,
-            float PenetrationDepth,
-            ulong TimeStamp,
-            uint CollisionCount,
-            string ObjectName,
-            int ObjectId)
+        public CameraInfo AdaptTo()
         {
-            this.Normal = Normal;
-            this.ImpactPoint = ImpactPoint;
-            this.Position = Position;
-            this.PenetrationDepth = PenetrationDepth;
-            this.TimeStamp = TimeStamp;
-            this.CollisionCount = CollisionCount;
-            this.ObjectName = ObjectName;
-            this.ObjectId = ObjectId;
+            return new CameraInfo(Pose.AdaptTo(), FOV, ProjMat.AdaptTo());
+        }
+
+        internal static CameraInfoRpc AdaptFrom(CameraInfo info)
+        {
+            return new CameraInfoRpc()
+            {
+                Pose = PoseRpc.AdaptFrom(info.Pose),
+                FOV = info.FOV,
+                ProjMat = ProjectionMatrixRpc.AdaptFrom(info.ProjMat)
+            };
         }
     }
 }

@@ -19,63 +19,31 @@
 
 #endregion MIT License (c) 2018 Isaac Walker
 
-using System.Numerics;
+using MessagePack;
+using Newtonsoft.Json;
 
-namespace AirsimClient.Common
+namespace AirsimClient.Adaptors
 {
     /// <summary>
-    /// The data about a collision event
+    /// Adapts the GeoPoint for transfer over Rpv
     /// </summary>
-    public class CollisionInfo
+    [MessagePackObject]
+    internal class GeoPointRpc : IAdaptable<GeoPoint>
     {
-        /// <summary>
-        /// Whether the collision has occured
-        /// </summary>
-        public readonly bool HasCollided;
+        [JsonProperty("altitude")]
+        internal double Altitude { get; set; }
 
 
-        public readonly Vector3 Normal;
+        [JsonProperty("latitude")]
+        internal double Latitude { get; set; }
 
 
-        public readonly Vector3 ImpactPoint;
+        [JsonProperty("longitude")]
+        internal double Longitude { get; set; }
 
-
-        public readonly Vector3 Position;
-
-
-        public readonly float PenetrationDepth;
-
-
-        public readonly ulong TimeStamp;
-
-
-        public readonly uint CollisionCount;
-
-
-        public readonly string ObjectName;
-
-
-        public readonly int ObjectId;
-
-        internal CollisionInfo(
-            bool HasCollided,
-            Vector3 Normal,
-            Vector3 ImpactPoint,
-            Vector3 Position,
-            float PenetrationDepth,
-            ulong TimeStamp,
-            uint CollisionCount,
-            string ObjectName,
-            int ObjectId)
+        public GeoPoint AdaptTo()
         {
-            this.Normal = Normal;
-            this.ImpactPoint = ImpactPoint;
-            this.Position = Position;
-            this.PenetrationDepth = PenetrationDepth;
-            this.TimeStamp = TimeStamp;
-            this.CollisionCount = CollisionCount;
-            this.ObjectName = ObjectName;
-            this.ObjectId = ObjectId;
+            return new GeoPoint(Altitude, Latitude, Longitude);
         }
     }
 }
