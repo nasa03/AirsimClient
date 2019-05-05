@@ -19,54 +19,48 @@
 
 #endregion MIT License (c) 2018 Isaac Walker
 
-
-using AirsimClient.Common;
+using AirsimClient.MultiRotor;
 using MessagePack;
 using Newtonsoft.Json;
 
+
 namespace AirsimClient.Adaptors
 {
-    /// <summary>
-    /// Adaptor for ImnageRequest for transfer over Rpc
-    /// </summary>
     [MessagePackObject]
-    internal class ImageRequestRpc : IAdaptable<ImageRequest>
+    internal class MultirotorStateRpc : IAdaptable<MultirotorState>
     {
-        [JsonProperty("camera_name")]
-        internal string CameraName { get; set; }
+        [JsonProperty("collision")]
+        internal CollisionInfoRpc Collision { get; set; }
 
 
-        [JsonProperty("image_type")]
-        internal ImageType ImageType { get; set; }
+        [JsonProperty("kinematics_estimated")]
+        internal KinematicsStateRpc KinematicsEstimated { get; set; }
 
 
-        [JsonProperty("pixels_as_float")]
-        internal bool PixelsAsFloat { get; set; }
+        [JsonProperty("gps_location")]
+        internal GeoPointRpc GpsLocation { get; set; }
 
 
-        [JsonProperty("compress")]
-        internal bool Compress { get; set; }
+        [JsonProperty("time_stamp")]
+        internal ulong TimeStamp { get; set; }
 
-        public ImageRequest AdaptTo()
+
+        [JsonProperty("landed_state")]
+        internal LandedState LandedState { get; set; }
+
+
+        [JsonProperty("rc_data")]
+        internal RCDataRpc RCData { get; set; }
+
+        public MultirotorState AdaptTo()
         {
-            return new ImageRequest(
-                CameraName,
-                ImageType,
-                PixelsAsFloat,
-                Compress
-                );
-        }
-
-        internal static ImageRequestRpc AdaptFrom(ImageRequest request)
-        {
-            return new ImageRequestRpc()
-            {
-                CameraName = request.CameraName,
-                Compress = request.Compress,
-                ImageType = request.ImageType,
-                PixelsAsFloat = request.PixelsAsFloat
-            };
-
+            return new MultirotorState(
+                Collision.AdaptTo(),
+                KinematicsEstimated.AdaptTo(),
+                GpsLocation.AdaptTo(),
+                TimeStamp,
+                LandedState,
+                RCData.AdaptTo());
         }
     }
 }

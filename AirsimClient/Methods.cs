@@ -169,10 +169,64 @@ namespace AirsimClient
 
         internal const string SimGetBonePoses = "simGetBonePoses";
 
+        /* Car */
 
         internal const string GetCarState = "getCarState";
 
 
         internal const string SetCarControls = "setCarControls";
+
+
+        /* Multirotor */ 
+
+        internal const string TakeOff = "takeoff";
+
+
+        internal const string Land = "land";
+
+
+        internal const string GoHome = "goHome";
+
+
+        internal const string MoveByAngleZ = "moveByAngleZ";
+
+
+        internal const string MoveByAngleThrottle = "moveByAngleThrottle";
+
+
+        internal const string MoveByVelocity = "moveByVelocity";
+
+
+        internal const string MoveByVelocityZ = "moveByVelocityZ";
+
+
+        internal const string MoveOnPath = "moveOnPath";
+
+
+        internal const string MoveToPosition = "moveToPosition";
+
+
+        internal const string MoveToZ = "moveToZ";
+
+
+        internal const string MoveByManual = "moveByManual";
+
+
+        internal const string RotateToYaw = "rotateToYaw";
+
+
+        internal const string RotateByYawRate = "rotateByYawRate";
+
+
+        internal const string Hover = "hover";
+
+
+        internal const string SetSafety = "setSafety";
+
+
+        internal const string GetMultirotorState = "getMultirotorState";
+
+
+        internal const string MoveByRC = "MoveByRC";
     }
 }

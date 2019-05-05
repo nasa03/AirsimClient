@@ -19,52 +19,34 @@
 
 #endregion MIT License (c) 2018 Isaac Walker
 
-
-using AirsimClient.Common;
+using AirsimClient.MultiRotor;
 using MessagePack;
 using Newtonsoft.Json;
 
 namespace AirsimClient.Adaptors
 {
-    /// <summary>
-    /// Adaptor for ImnageRequest for transfer over Rpc
-    /// </summary>
     [MessagePackObject]
-    internal class ImageRequestRpc : IAdaptable<ImageRequest>
+    internal class YawModeRpc : IAdaptable<YawMode>
     {
-        [JsonProperty("camera_name")]
-        internal string CameraName { get; set; }
+        [JsonProperty("is_rate")]
+        internal bool IsRate { get; set; }
 
 
-        [JsonProperty("image_type")]
-        internal ImageType ImageType { get; set; }
+        [JsonProperty("yaw_or_rate")]
+        internal float YawOrRate { get; set; }
 
 
-        [JsonProperty("pixels_as_float")]
-        internal bool PixelsAsFloat { get; set; }
-
-
-        [JsonProperty("compress")]
-        internal bool Compress { get; set; }
-
-        public ImageRequest AdaptTo()
+        public YawMode AdaptTo()
         {
-            return new ImageRequest(
-                CameraName,
-                ImageType,
-                PixelsAsFloat,
-                Compress
-                );
+            return new YawMode(IsRate, YawOrRate);
         }
 
-        internal static ImageRequestRpc AdaptFrom(ImageRequest request)
+        internal static YawModeRpc AdaptFrom(YawMode Input)
         {
-            return new ImageRequestRpc()
+            return new YawModeRpc()
             {
-                CameraName = request.CameraName,
-                Compress = request.Compress,
-                ImageType = request.ImageType,
-                PixelsAsFloat = request.PixelsAsFloat
+                IsRate = Input.IsRate,
+                YawOrRate = Input.YawOrRate;
             };
 
         }
