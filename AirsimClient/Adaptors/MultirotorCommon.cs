@@ -26,14 +26,60 @@ using Newtonsoft.Json;
 namespace AirsimClient.Adaptors
 {
     [MessagePackObject]
+    internal class MultirotorStateRpc : IAdaptable<MultirotorState>
+    {
+        [JsonProperty("collision")]
+        [Key("collision")]
+        public CollisionInfoRpc Collision { get; set; }
+
+
+        [JsonProperty("kinematics_estimated")]
+        [Key("kinematics_estimated")]
+        public KinematicsStateRpc KinematicsEstimated { get; set; }
+
+
+        [JsonProperty("gps_location")]
+        [Key("gps_location")]
+        public GeoPointRpc GpsLocation { get; set; }
+
+
+        [JsonProperty("time_stamp")]
+        [Key("time_stamp")]
+        public ulong TimeStamp { get; set; }
+
+
+        [JsonProperty("landed_state")]
+        [Key("landed_state")]
+        public LandedState LandedState { get; set; }
+
+
+        [JsonProperty("rc_data")]
+        [Key("rc_data")]
+        public RCDataRpc RCData { get; set; }
+
+        public MultirotorState AdaptTo()
+        {
+            return new MultirotorState(
+                Collision.AdaptTo(),
+                KinematicsEstimated.AdaptTo(),
+                GpsLocation.AdaptTo(),
+                TimeStamp,
+                LandedState,
+                RCData.AdaptTo());
+        }
+    }
+
+    [MessagePackObject]
     internal class YawModeRpc : IAdaptable<YawMode>
     {
         [JsonProperty("is_rate")]
-        internal bool IsRate { get; set; }
+        [Key("is_rate")]
+        public bool IsRate { get; set; }
 
 
         [JsonProperty("yaw_or_rate")]
-        internal float YawOrRate { get; set; }
+        [Key("yaw_or_rate")]
+        public float YawOrRate { get; set; }
 
 
         public YawMode AdaptTo()
@@ -46,7 +92,7 @@ namespace AirsimClient.Adaptors
             return new YawModeRpc()
             {
                 IsRate = Input.IsRate,
-                YawOrRate = Input.YawOrRate;
+                YawOrRate = Input.YawOrRate
             };
 
         }

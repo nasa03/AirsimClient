@@ -19,6 +19,7 @@
 
 #endregion MIT License (c) 2018 Isaac Walker
 
+using AirsimClient.Adaptors;
 using MsgPackRpc;
 using System.Threading.Tasks;
 

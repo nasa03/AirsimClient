@@ -19,6 +19,13 @@
 
 #endregion MIT License (c) 2018 Isaac Walker
 
+using AirsimClient.Common;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace AirsimClient.Car
 {
     /// <summary>
@@ -66,5 +73,72 @@ namespace AirsimClient.Car
         /// 
         /// </summary>
         public bool GearImmediate { get; set; }
+    }
+
+
+    /// <summary>
+    /// Describes the State of the Car
+    /// </summary>
+    public class CarState
+    {
+        /// <summary>
+        /// The current speed of the car
+        /// </summary>
+        public readonly float Speed;
+
+
+        /// <summary>
+        /// The gear currently engaged
+        /// </summary>
+        public readonly int Gear;
+
+
+        /// <summary>
+        /// The Revolutions Per Minute of the wheels of the Car
+        /// </summary>
+        public readonly float RPM;
+
+
+        /// <summary>
+        /// The Max Revolutions Per Minute of the wheels allowed on the car
+        /// </summary>
+        public readonly float MaxRPM;
+
+
+        /// <summary>
+        /// States whether or not the handbrake is engaged
+        /// </summary>
+        public readonly bool Handbrake;
+
+
+        /// <summary>
+        /// The current Kinematics of the car
+        /// </summary>
+        public readonly KinematicsState KinematicsEstimated;
+
+
+        /// <summary>
+        /// The timestamp of when the state was measured
+        /// </summary>
+        public readonly ulong TimeStamp;
+
+        internal CarState(
+            float Speed,
+            int Gear,
+            float RPM,
+            float MaxRPM,
+            bool Handbrake,
+            KinematicsState KinematicsEstimated,
+            ulong TimeStamp
+            )
+        {
+            this.Speed = Speed;
+            this.Gear = Gear;
+            this.RPM = RPM;
+            this.MaxRPM = MaxRPM;
+            this.Handbrake = Handbrake;
+            this.KinematicsEstimated = KinematicsEstimated;
+            this.TimeStamp = TimeStamp;
+        }
     }
 }

@@ -19,31 +19,30 @@
 
 #endregion MIT License (c) 2018 Isaac Walker
 
-using MessagePack;
-using Newtonsoft.Json;
+using System.Numerics;
 
-namespace AirsimClient.Adaptors
+namespace AirsimClient
 {
     /// <summary>
-    /// Adapts the GeoPoint for transfer over Rpv
+    /// A pose
     /// </summary>
-    [MessagePackObject]
-    internal class GeoPointRpc : IAdaptable<GeoPoint>
+    public class Pose
     {
-        [JsonProperty("altitude")]
-        internal double Altitude { get; set; }
+        /// <summary>
+        /// The X,Y,Z position 
+        /// </summary>
+        public readonly Vector3 Position;
 
 
-        [JsonProperty("latitude")]
-        internal double Latitude { get; set; }
+        /// <summary>
+        /// The orientation
+        /// </summary>
+        public readonly Quaternion Orientation;
 
-
-        [JsonProperty("longitude")]
-        internal double Longitude { get; set; }
-
-        public GeoPoint AdaptTo()
+        internal Pose(Vector3 Position, Quaternion Orientation)
         {
-            return new GeoPoint(Altitude, Latitude, Longitude);
+            this.Position = Position;
+            this.Orientation = Orientation;
         }
     }
 }

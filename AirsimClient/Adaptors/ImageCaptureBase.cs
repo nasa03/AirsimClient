@@ -19,12 +19,61 @@
 
 #endregion MIT License (c) 2018 Isaac Walker
 
-using AirsimClient.Common;
 using MessagePack;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace AirsimClient.Adaptors
 {
+    /// <summary>
+    /// Adaptor for ImnageRequest for transfer over Rpc
+    /// </summary>
+    [MessagePackObject]
+    internal class ImageRequestRpc : IAdaptable<ImageRequest>
+    {
+        [Key("camera_name")]
+        public string CameraName { get; set; }
+
+
+        [JsonProperty("image_type")]
+        [Key("image_type")]
+        public ImageType ImageType { get; set; }
+
+
+        [Key("pixels_as_float")]
+        public bool PixelsAsFloat { get; set; }
+
+
+        [Key("compress")]
+        public bool Compress { get; set; }
+
+        public ImageRequest AdaptTo()
+        {
+            return new ImageRequest(
+                CameraName,
+                ImageType,
+                PixelsAsFloat,
+                Compress
+                );
+        }
+
+        internal static ImageRequestRpc AdaptFrom(ImageRequest request)
+        {
+            return new ImageRequestRpc()
+            {
+                CameraName = request.CameraName,
+                Compress = request.Compress,
+                ImageType = request.ImageType,
+                PixelsAsFloat = request.PixelsAsFloat
+            };
+
+        }
+    }
+
     /// <summary>
     /// Adaptor for  ImageResponse for Transfer over Rpc
     /// </summary>
@@ -32,51 +81,57 @@ namespace AirsimClient.Adaptors
     internal class ImageResponseRpc : IAdaptable<ImageResponse>
     {
         [JsonProperty("image_data_uint8")]
-        internal byte[] ImageDataUInt8 { get; set; }
+        [Key("image_data_uint8")]
+        public byte[] ImageDataUInt8 { get; set; }
 
 
         [JsonProperty("image_data_float")]
-        internal float[] ImageDataFloat { get; set; }
+        [Key("image_data_float")]
+        public float[] ImageDataFloat { get; set; }
 
 
-        [JsonProperty("camera_name")]
-        internal string CameraName { get; set; }
+        [Key("camera_name")]
+        public string CameraName { get; set; }
 
 
         [JsonProperty("camera_position")]
-        internal Vector3Rpc CameraPosition { get; set; }
+        [Key("camera_position")]
+        public Vector3Rpc CameraPosition { get; set; }
 
 
         [JsonProperty("camera_orientation")]
-        internal QuaternionRpc CameraOrientation { get; set; }
+        [Key("camera_orientation")]
+        public QuaternionRpc CameraOrientation { get; set; }
 
 
         [JsonProperty("time_stamp")]
-        internal ulong TimeStamp { get; set; }
+        [Key("time_stamp")]
+        public ulong TimeStamp { get; set; }
 
 
-        [JsonProperty("message")]
-        internal string Message { get; set; }
+        [Key("message")]
+        public string Message { get; set; }
 
 
-        [JsonProperty("pixels_as_float")]
-        internal bool PixelsAsFloat { get; set; }
+        [Key("pixels_as_float")]
+        public bool PixelsAsFloat { get; set; }
 
 
-        [JsonProperty("compress")]
-        internal bool Compress { get; set; }
+        [Key("compress")]
+        public bool Compress { get; set; }
 
 
-        [JsonProperty("width")]
-        internal int Width { get; set; }
+        [Key("width")]
+        public int Width { get; set; }
 
 
-        [JsonProperty("height")]
-        internal int Height { get; set; }
+        [Key("height")]
+        public int Height { get; set; }
 
 
         [JsonProperty("image_type")]
-        internal ImageType ImageType { get; set; }
+        [Key("image_type")]
+        public ImageType ImageType { get; set; }
 
         public ImageResponse AdaptTo()
         {

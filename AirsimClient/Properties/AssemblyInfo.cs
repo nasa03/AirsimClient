@@ -22,6 +22,13 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("b11476ad-3081-4354-91bb-9a0eb6a0235b")]
 
+
+[assembly: InternalsVisibleTo("Nito.AsyncEx")]
+[assembly: InternalsVisibleTo("Newtonsoft.Json")]
+[assembly: InternalsVisibleTo("MsgPackRpc")]
+[assembly: InternalsVisibleTo("MessagePack")]
+[assembly: InternalsVisibleTo("MessagePack.Resolvers.DynamicObjectResolver")]
+[assembly: InternalsVisibleTo("MessagePack.Resolvers.DynamicUnionResolver")]
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version

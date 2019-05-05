@@ -20,6 +20,7 @@
 #endregion MIT License (c) 2018 Isaac Walker
 
 
+using System;
 using System.Threading.Tasks;
 using AirsimClient.Adaptors;
 using MsgPackRpc;
@@ -34,7 +35,9 @@ namespace AirsimClient.Car
         /// <inheritdoc/>
         public async Task<RpcResult<CarState>> GetCarStateAsync(string VehicleName)
         {
-            return await m_proxy.CallAsyncAdaptor<CarStateRpc, CarState>(Methods.GetCarState, VehicleName);
+            Task<RpcResult<CarState>> res = m_proxy.CallAsyncAdaptor<CarStateRpc,CarState>(Methods.GetCarState, VehicleName);
+
+            return await res;
         }
 
         /// <inheritdoc/>

@@ -33,27 +33,33 @@ namespace AirsimClient.Adaptors
     internal class KinematicsStateRpc : IAdaptable<KinematicsState>
     {
         [JsonProperty("position")]
-        internal Vector3Rpc Position { get; set; }
+        [Key("position")]
+        public Vector3Rpc Position { get; set; }
 
 
         [JsonProperty("orientation")]
-        internal QuaternionRpc Orientation { get; set; }
+        [Key("orientation")]
+        public QuaternionRpc Orientation { get; set; }
 
 
         [JsonProperty("linear_velocity")]
-        internal Vector3Rpc LinearVelocity { get; set; }
-
-
-        [JsonProperty("linear_acceleration")]
-        internal Vector3Rpc LinearAcceleration { get; set; }
+        [Key("linear_velocity")]
+        public Vector3Rpc LinearVelocity { get; set; }
 
 
         [JsonProperty("angular_velocity")]
-        internal Vector3Rpc AngularVelocity { get; set; }
+        [Key("angular_velocity")]
+        public Vector3Rpc AngularVelocity { get; set; }
+
+
+        [JsonProperty("linear_acceleration")]
+        [Key("linear_acceleration")]
+        public Vector3Rpc LinearAcceleration { get; set; }
 
 
         [JsonProperty("angular_acceleration")]
-        internal Vector3Rpc AngularAcceleration { get; set; }
+        [Key("angular_acceleration")]
+        public Vector3Rpc AngularAcceleration { get; set; }
 
         public KinematicsState AdaptTo()
         {

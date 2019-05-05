@@ -39,7 +39,7 @@ namespace AirsimClient
         protected ConnectionState _connectionState;
 
 
-        protected RpcProxy m_proxy;
+        protected readonly RpcProxy m_proxy;
 
         public RpcClientBase()
         {

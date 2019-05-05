@@ -19,47 +19,65 @@
 
 #endregion MIT License (c) 2018 Isaac Walker
 
-namespace AirsimClient.Common
+using System.Numerics;
+
+namespace AirsimClient
 {
     /// <summary>
-    /// Request for taking an image from a camera
+    /// The Kinematics of the vehicle
     /// </summary>
-    public class ImageRequest
+    public class KinematicsState
     {
         /// <summary>
-        /// The name of the camera from which the image is taken
+        /// The position of the vehicle
         /// </summary>
-        public readonly string CameraName;
+        public Vector3 Position { get; private set; }
 
 
         /// <summary>
-        /// The Type of image taken
+        /// The Orientation of the vehicle
         /// </summary>
-        public readonly ImageType ImageType;
+        public Quaternion Orientation { get; private set; }
 
 
         /// <summary>
-        /// Are the pixels as floats, otherwise uint8's
+        /// The linear velocity of the vehicle
         /// </summary>
-        public readonly bool PixelsAsFloat;
+        public Vector3 LinearVelocity { get; private set; }
 
 
         /// <summary>
-        /// Is the image compressed
+        /// The angular velocity of the car
         /// </summary>
-        public readonly bool Compress;
+        public Vector3 AngularVelocity { get; private set; }
 
-        public ImageRequest(
-            string CameraName,
-            ImageType ImageType,
-            bool PixelsAsFloat,
-            bool Compress
+
+        /// <summary>
+        /// The linear acceleration of the car
+        /// </summary>
+        public Vector3 LinearAcceleration { get; private set; }
+
+
+        /// <summary>
+        /// The angular acceleration of the car
+        /// </summary>
+        public Vector3 AngularAcceleration { get; private set; }
+
+        public KinematicsState(
+            Vector3 Position,
+            Quaternion Orientation,
+            Vector3 LinearVelocity,
+            Vector3 AngularVelocity,
+            Vector3 LinearAcceleration,
+            Vector3 AngularAcceleration
             )
         {
-            this.CameraName = CameraName;
-            this.ImageType = ImageType;
-            this.PixelsAsFloat = PixelsAsFloat;
-            this.Compress = Compress;
+            this.Position = Position;
+            this.Orientation = Orientation;
+            this.LinearVelocity = LinearVelocity;
+            this.AngularVelocity = AngularVelocity;
+            this.LinearAcceleration = LinearAcceleration;
+            this.AngularAcceleration = AngularAcceleration;
         }
     }
 }

@@ -19,56 +19,51 @@
 
 #endregion MIT License (c) 2018 Isaac Walker
 
+
+using System.Net;
+using AirsimClient.Adaptors;
 using AirsimClient.Car;
-using MessagePack;
-using Newtonsoft.Json;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AirsimClient.Adaptors
+namespace ClientTests
 {
-    /// <summary>
-    /// Adapts the CarState for transfer over Rpc
-    /// </summary>
-    [MessagePackObject]
-    internal class CarStateRpc : IAdaptable<CarState>
+    [TestClass]
+    public class CarTest
     {
-        [JsonProperty("speed")]
-        internal float Speed { get; set; }
+        private const int Port = 41451;
 
 
-        [JsonProperty("gear")]
-        internal int Gear { get; set; }
+        private const string Address = "127.0.0.1";
 
 
-        [JsonProperty("rpm")]
-        internal float RPM { get; set; }
+        private readonly ICarRpcClient m_client;
 
 
-        [JsonProperty("maxrpm")]
-        internal float MaxRPM { get; set; }
+        private static readonly string VehicleName = string.Empty;
 
-
-        [JsonProperty("handbrake")]
-        internal bool Handbrake { get; set; }
-
-
-        [JsonProperty("kinematics_estimated")]
-        internal KinematicsStateRpc KinematicsEstimated { get; set; }
-
-
-        [JsonProperty("time_stamp")]
-        internal ulong TimeStamp { get; set; }
-
-        public CarState AdaptTo()
+        public CarTest()
         {
-            return new CarState(
-                Speed,
-                Gear,
-                RPM,
-                MaxRPM,
-                Handbrake,
-                KinematicsEstimated.AdaptTo(),
-                TimeStamp
-                );
+            m_client = new CarRpcClient();
+        }
+
+        [TestMethod]
+        public void TestBasic()
+        {
+            bool Connected = m_client.ConnectAsync(Port, IPAddress.Parse(Address)).Result;
+            Assert.IsTrue(Connected);
+
+            bool ApiEnabled = m_client.EnableApiControlAsync(true, VehicleName).Result.Successful;
+            Assert.IsTrue(ApiEnabled);
+
+            bool ArmDisarmed = m_client.ArmDisarmAsync(true, VehicleName).Result.Successful;
+            Assert.IsTrue(ArmDisarmed);
+
+            bool CarStateSucc = m_client.GetCarStateAsync(VehicleName).Result.Successful;
+            Assert.IsTrue(CarStateSucc);
+
+            bool ControlsSet = m_client.SetCarControlsAsync(new CarControls() { Steering = 0.2f, Throttle = 0.4f }, VehicleName).Result.Successful;
+            Assert.IsTrue(ControlsSet);
+
         }
     }
 }

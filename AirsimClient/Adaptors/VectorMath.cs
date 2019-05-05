@@ -19,12 +19,90 @@
 
 #endregion MIT License (c) 2018 Isaac Walker
 
-using AirsimClient.Common;
 using MessagePack;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace AirsimClient.Adaptors
 {
+    /// <summary>
+    /// Adaptor for Numerics' Vector3 transer over Rpc
+    /// </summary>
+    [MessagePackObject]
+    internal class Vector3Rpc : IAdaptable<Vector3>
+    {
+
+        [Key("x_val")]
+        public float X { get; set; }
+
+
+        [Key("y_val")]
+        public float Y { get; set; }
+
+
+        [Key("z_val")]
+        public float Z { get; set; }
+
+
+        public Vector3 AdaptTo()
+        {
+            return new Vector3(X, Y, Z);
+        }
+
+        internal static Vector3Rpc AdaptFrom(Vector3 vector3)
+        {
+            return new Vector3Rpc()
+            {
+                X = vector3.X,
+                Y = vector3.Y,
+                Z = vector3.Z
+            };
+        }
+    }
+
+    /// <summary>
+    /// Adapts the Quaternion object for transfer over Rpc
+    /// </summary>
+    [MessagePackObject]
+    internal class QuaternionRpc : IAdaptable<Quaternion>
+    {
+        [Key("w_val")]
+        public float W { get; set; }
+
+
+        [Key("x_val")]
+        public float X { get; set; }
+
+
+        [Key("y_val")]
+        public float Y { get; set; }
+
+
+        [Key("z_val")]
+        public float Z { get; set; }
+
+        public Quaternion AdaptTo()
+        {
+            return new Quaternion(X, Y, Z, W);
+        }
+
+        internal static QuaternionRpc AdaptFrom(Quaternion q)
+        {
+            return new QuaternionRpc()
+            {
+                W = q.W,
+                X = q.X,
+                Y = q.Y,
+                Z = q.Z
+            };
+        }
+    }
+
     /// <summary>
     /// Adapts the Pose object for transfer over Rpc
     /// </summary>
@@ -32,11 +110,13 @@ namespace AirsimClient.Adaptors
     internal class PoseRpc : IAdaptable<Pose>
     {
         [JsonProperty("position")]
-        internal Vector3Rpc Position { get; set; }
+        [Key("position")]
+        public Vector3Rpc Position { get; set; }
 
 
         [JsonProperty("orientation")]
-        internal QuaternionRpc Orientation { get; set; }
+        [Key("orientation")]
+        public QuaternionRpc Orientation { get; set; }
 
         public Pose AdaptTo()
         {
@@ -52,6 +132,6 @@ namespace AirsimClient.Adaptors
             };
         }
 
-    
+
     }
 }

@@ -20,6 +20,7 @@
 #endregion MIT License (c) 2018 Isaac Walker
 
 using MsgPackRpc;
+using System;
 using System.Threading.Tasks;
 
 namespace AirsimClient.Adaptors
@@ -36,10 +37,9 @@ namespace AirsimClient.Adaptors
         internal static async Task<RpcResult<R>> CallAsyncAdaptor<T,R>(this RpcProxy m_proxy, string method, params object[] args)
             where T : IAdaptable<R>
         {
-            Task<RpcResult<T>> output =  m_proxy.CallAsync<T>(method, args);
+            Task<RpcResult<T>> output = m_proxy.CallAsync<T>(method, args);
 
             Task<RpcResult<R>> returned = output.ContinueWith<RpcResult<R>>(ContinuationFunction<T, R>);
-
             return await returned;
         }
 
@@ -48,7 +48,7 @@ namespace AirsimClient.Adaptors
         {
             RpcResult<T> Res = Input.Result;
             if (Res.Successful)
-                return new RpcResult<R>() { Value = Res.Value.AdaptTo(), Error = Res.Error };
+                return new RpcResult<R>() { Value = Res.Value.AdaptTo(),Successful= true,  Error = Res.Error };
 
             return new RpcResult<R> { Value = default(R) };
         }

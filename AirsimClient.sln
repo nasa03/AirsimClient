@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirsimClient", "AirsimClien
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsgPackRpc", "MsgPackRpc\MsgPackRpc.csproj", "{B6415E66-4DBE-49A7-8C5D-024B560C615D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientTests", "ClientTests\ClientTests.csproj", "{CF8096A8-AB3C-4949-95C5-BE98DBA7CED2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{B6415E66-4DBE-49A7-8C5D-024B560C615D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6415E66-4DBE-49A7-8C5D-024B560C615D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6415E66-4DBE-49A7-8C5D-024B560C615D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF8096A8-AB3C-4949-95C5-BE98DBA7CED2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF8096A8-AB3C-4949-95C5-BE98DBA7CED2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF8096A8-AB3C-4949-95C5-BE98DBA7CED2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF8096A8-AB3C-4949-95C5-BE98DBA7CED2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

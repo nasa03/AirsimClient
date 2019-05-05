@@ -21,61 +21,42 @@
 
 using System.Numerics;
 
+
 namespace AirsimClient.Common
 {
     /// <summary>
-    /// The data about a collision event
+    /// The current state of the environment
     /// </summary>
-    public class CollisionInfo
+    public class EnvironmentState
     {
-        /// <summary>
-        /// Whether the collision has occured
-        /// </summary>
-        public readonly bool HasCollided;
+
+        public Vector3 Position { get; private set; }
 
 
-        public readonly Vector3 Normal;
+        public  Vector3 Gravity { get; private set; }
 
 
-        public readonly Vector3 ImpactPoint;
+        public float AirPressure { get; private set; }
 
 
-        public readonly Vector3 Position;
+        public float Temperature { get; private set; }
 
 
-        public readonly float PenetrationDepth;
-
-
-        public readonly ulong TimeStamp;
-
-
-        public readonly uint CollisionCount;
-
-
-        public readonly string ObjectName;
-
-
-        public readonly int ObjectId;
-
-        internal CollisionInfo(
-            bool HasCollided,
-            Vector3 Normal,
-            Vector3 ImpactPoint,
-            Vector3 Position,
-            float PenetrationDepth,
-            ulong TimeStamp,
-            uint CollisionCount,
-            string ObjectName,
-            int ObjectId)
+        public float AirDensity { get; private set; }
+        
+        public  EnvironmentState(
+            Vector3 Position, 
+            Vector3 Gravity,
+            float AirPressure,
+            float Temperature,
+            float AirDensity
+            )
         {
-            this.Normal = Normal;
-            this.ImpactPoint = ImpactPoint;
             this.Position = Position;
-            this.PenetrationDepth = PenetrationDepth;
-            this.TimeStamp = TimeStamp;
-            this.CollisionCount = CollisionCount;
-            this.ObjectName = ObjectName;
-            this.ObjectId = ObjectId;
+            this.Gravity = Gravity;
+            this.AirPressure = AirPressure;
+            this.Temperature = Temperature;
+            this.AirDensity = AirDensity;
         }
     }
 }

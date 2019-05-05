@@ -19,35 +19,18 @@
 
 #endregion MIT License (c) 2018 Isaac Walker
 
-namespace AirsimClient.Adaptors
+namespace AirsimClient
 {
-    /// <summary>
-    /// A geography point
-    /// </summary>
-    public class GeoPoint
+    public enum WeatherParameter : int
     {
-        /// <summary>
-        /// Altitude
-        /// </summary>
-        public readonly double Altitude;
-
-
-        /// <summary>
-        /// Latitude
-        /// </summary>
-        public readonly double Latitude;
-
-
-        /// <summary>
-        /// Longitude
-        /// </summary>
-        public readonly double Longitude;
-
-        internal GeoPoint(double Altitude, double Latitude, double Longitude)
-        {
-            this.Altitude = Altitude;
-            this.Latitude = Latitude;
-            this.Longitude = Longitude;
-        }     
+        Rain = 0,
+        RoadWetness = 1,
+        Snow = 2,
+        RoadSnow = 3,
+        MapleLeaf = 4,
+        RoadLeaf = 5,
+        Dust = 6,
+        Fog = 7,
+        Enabled
     }
 }

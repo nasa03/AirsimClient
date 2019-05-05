@@ -40,7 +40,7 @@ namespace MsgPackRpc
         public bool Successful
         {
             get => _successful;
-            internal set => _successful = value;
+            set => _successful = value;
         }
 
         private bool _successful;
