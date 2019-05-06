@@ -67,7 +67,7 @@ namespace AirsimClient
         /// <summary>
         /// The timestamp when the lidar reading was taken
         /// </summary>
-        public int TimeStamp { get; private set; }
+        public long TimeStamp { get; private set; }
 
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace AirsimClient
         /// </summary>
         public Pose Pose { get; private set; }
 
-        internal LidarData(int TimeStamp, float[] PointCloud, Pose Pose)
+        internal LidarData(long TimeStamp, float[] PointCloud, Pose Pose)
         {
             this.TimeStamp = TimeStamp;
             this.PointCloud = PointCloud;

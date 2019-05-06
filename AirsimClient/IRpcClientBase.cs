@@ -29,15 +29,31 @@ using System.Threading.Tasks;
 
 namespace AirsimClient
 {
+    /// <summary>
+    /// Base client for interacting with API
+    /// </summary>
     public interface IRpcClientBase
     {
+        /// <summary>
+        /// Establishes a connection over TCP
+        /// </summary>
         Task<bool> ConnectAsync(int Port, IPAddress Address);
 
+        /// <summary>
+        /// Pings if there is a connection established
+        /// </summary>
         Task<RpcResult<bool>> PingAsync();
 
+        /// <summary>
+        /// Gets the connection state
+        /// </summary>
         Task<ConnectionState> GetConnectionStateAsync();
 
+        /// <summary>
+        /// Enables the client to use AirSim API
+        /// </summary>
         Task<RpcResult> EnableApiControlAsync(bool IsEnabled, string VehicleName);
+
 
         Task<RpcResult<bool>> IsApiControlEnabledAsync(string VehicleName);
 
@@ -67,7 +83,7 @@ namespace AirsimClient
 
         Task<RpcResult<ImageResponse>> SimGetImagesAsync(ImageRequest Request, string VehicleName);
 
-        Task<RpcResult<ushort[]>> SimGetImageAsync(string CameraName, ImageType ImageType, string VehicleName);
+        Task<RpcResult<byte[]>> SimGetImageAsync(string CameraName, ImageType ImageType, string VehicleName);
 
         Task<RpcResult> SimPrintLogMessageAsync(string Message, string MessageParam, ushort severity);
 
@@ -129,5 +145,10 @@ namespace AirsimClient
         Task<RpcResult> SimSetBonePosesAsync(Dictionary<string, Pose> Poses, string CharacterName);
 
         Task<RpcResult<Dictionary<string, Pose>>> SimGetBonePosesAsync(string[] BoneNames, string CharacterName);
+
+        /// <summary>
+        /// Reads data from a lidar sensor on  a vehicle.
+        /// </summary>       
+        Task<RpcResult<LidarData>> GetLidarData(string LidarName, string VehicleName);
     }
 }

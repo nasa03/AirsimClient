@@ -21,6 +21,7 @@
 
 
 using System.Net;
+using AirsimClient;
 using AirsimClient.Adaptors;
 using AirsimClient.Car;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -64,6 +65,10 @@ namespace ClientTests
             bool ControlsSet = m_client.SetCarControlsAsync(new CarControls() { Steering = 0.2f, Throttle = 0.4f }, VehicleName).Result.Successful;
             Assert.IsTrue(ControlsSet);
 
+            bool GetImageSuccesful = m_client.SimGetImageAsync(string.Empty, ImageType.Scene, VehicleName).Result.Successful;
+            Assert.IsTrue(GetImageSuccesful);
+
+          
         }
     }
 }

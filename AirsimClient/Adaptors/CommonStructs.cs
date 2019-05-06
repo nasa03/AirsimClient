@@ -270,5 +270,30 @@ namespace AirsimClient.Adaptors
             };
 
         }
+
     }
+
+    [MessagePackObject]
+    internal class LidarDataRpc : IAdaptable<LidarData>
+    {
+        [JsonProperty("time_stamp")]
+        [Key("time_stamp")]
+        public long TimeStamp { get; set; }
+
+
+        [JsonProperty("point_cloud")]
+        [Key("point_cloud")]
+        public float[] PointCloud { get; set; }
+
+
+        [JsonProperty("pose")]
+        [Key("pose")]
+        public PoseRpc Pose { get; set; }
+
+        public LidarData AdaptTo()
+        {
+            return new LidarData(TimeStamp, PointCloud, Pose.AdaptTo());
+        }
+    }
+
 }

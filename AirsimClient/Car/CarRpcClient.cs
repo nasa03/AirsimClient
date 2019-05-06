@@ -32,7 +32,7 @@ namespace AirsimClient.Car
     /// </summary>
     public sealed class CarRpcClient : RpcClientBase, ICarRpcClient
     {
-        /// <inheritdoc/>
+        /// <inheritdoc cref="ICarRpcClient.GetCarStateAsync(string)" />
         public async Task<RpcResult<CarState>> GetCarStateAsync(string VehicleName)
         {
             Task<RpcResult<CarState>> res = m_proxy.CallAsyncAdaptor<CarStateRpc,CarState>(Methods.GetCarState, VehicleName);
@@ -40,7 +40,7 @@ namespace AirsimClient.Car
             return await res;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="ICarRpcClient.SetCarControlsAsync(CarControls, string)" />
         public async Task<RpcResult> SetCarControlsAsync(CarControls Controls, string VehicleName)
         {
             CarControlsRpc adapted = CarControlsRpc.AdaptFrom(Controls);

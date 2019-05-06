@@ -169,6 +169,8 @@ namespace AirsimClient
 
         internal const string SimGetBonePoses = "simGetBonePoses";
 
+        internal const string GetLidarData = "getLidarData";
+
         /* Car */
 
         internal const string GetCarState = "getCarState";
